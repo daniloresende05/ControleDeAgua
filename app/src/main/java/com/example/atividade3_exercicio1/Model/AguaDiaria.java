@@ -4,26 +4,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AguaDiaria {
-    private float peso;
-    private float volumeCopo;
-    private List<Copo> copos = new ArrayList<Copo>();
+    private int peso;
+    private int volumeCopo;
+    private List<Copo> copos;
 
-    public AguaDiaria(float peso, float volumeCopo) {
+    public AguaDiaria(int peso, int volumeCopo) {
         this.peso = peso;
         this.volumeCopo = volumeCopo;
+        this.copos = new ArrayList<>();
+        int quantidadeCopos = (int) Math.ceil(peso * 35.0 / volumeCopo);
+        for (int i = 0; i < quantidadeCopos; i++) {
+            copos.add(new Copo(volumeCopo));
+        }
     }
 
     public List<Copo> getCopos() {
         return copos;
     }
 
-    public float litrosBebidosAteAgora(){
-        int count =0;
-        for(Copo c: copos){
-            if(c.isCheio()){
-                count+=1;
+    public int getPeso() {
+        return peso;
+    }
+
+    public float getVolumeTotal() {
+        return peso * 35.0f;
+    }
+
+    public float getQuantidadeBebida() {
+        float total = 0;
+        for (Copo c : copos) {
+            if (c.isCheio()) {
+                total += c.getVolume();
             }
         }
-        return (volumeCopo*count)/1000;
+        return total;
+    }
+
+    public void voltarCopo() {
+        for (Copo copo : copos) {
+            copo.desbeber();
+        }
     }
 }
